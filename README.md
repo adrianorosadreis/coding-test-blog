@@ -53,16 +53,7 @@ Certifique-se de ter o seguinte instalado:
 - SQL Server (ou SQL Server Express): [Download](https://www.microsoft.com/pt-br/sql-server/sql-server-downloads)
 - Visual Studio 2022 (ou VS Code com C# extension): [Download Visual Studio](https://visualstudio.microsoft.com/)
 
-#### **Passo 1: Clonando o Repositório**
-
-Primeiro, clone o repositório do projeto para o seu ambiente local:
-
-```bash
-git clone https://seu-repositorio.git
-cd seu-repositorio
-```
-
-#### **Passo 2: Configuração do Banco de Dados**
+#### **Configuração do Banco de Dados**
 
 No `appsettings.json`, configure a string de conexão para o SQL Server:
 
@@ -78,7 +69,7 @@ Caso deseje utilizar uma instância do SQL Server diferente, altere o valor de `
 dotnet ef database update
 ```
 
-#### **Passo 3: Configuração do Identity**
+#### **Configuração do Identity**
 
 Se você estiver utilizando uma configuração personalizada de `User` (como no projeto), o `ApplicationDbContext` já estará configurado para usar o modelo de usuário extendido.
 
@@ -89,7 +80,7 @@ dotnet ef migrations add InitialCreate
 dotnet ef database update
 ```
 
-#### **Passo 4: Configuração do SignalR**
+#### **Configuração do SignalR**
 
 O SignalR já está configurado automaticamente no `Program.cs`, portanto, não há necessidade de realizar nenhuma configuração adicional além da conexão no frontend:
 
