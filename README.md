@@ -69,7 +69,7 @@ Caso deseje utilizar uma instância do SQL Server diferente, altere o valor de `
 dotnet ef database update
 ```
 
-#### **Configuração do Identity**
+#### **Configuração migrations**
 
 Se você estiver utilizando uma configuração personalizada de `User` (como no projeto), o `ApplicationDbContext` já estará configurado para usar o modelo de usuário extendido.
 
@@ -77,6 +77,7 @@ O projeto já inclui as migrações necessárias para o banco de dados de autent
 
 ```bash
 dotnet ef migrations add InitialCreate
+dotnet ef migrations add UpdateTaskAndUserModels
 dotnet ef database update
 ```
 
