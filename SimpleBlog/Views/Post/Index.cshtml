@@ -1,0 +1,66 @@
+﻿@model IEnumerable<SimpleBlog.Models.Post>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2 class="text-center">Postagens</h2>
+
+<p>
+    <a class="btn btn-primary" href="@Url.Action("Create", "Post")">Criar nova postagem</a>
+</p>
+
+<div class="container mt-4">
+    @foreach (var post in Model)
+    {
+        <div class="card mb-4">
+            <div class="card-body">
+                <div class="post">
+                    <h5 class="card-title">@post.Title</h5>
+                    <p class="card-text">@post.Content</p>
+                    <small><strong>Autor:</strong> @(post.User != null ? post.User.Name : "Desconhecido")</small>
+                    <small class="d-block mt-2"><strong>Data:</strong> @post.CreatedAt.ToString("dd/MM/yyyy HH:mm")</small>
+
+                    @* Verifica se o usuário está autenticado e se a postagem é do usuário atual para permitir editar e excluir *@
+                    @if (User.Identity.IsAuthenticated && post.UserId == User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value)
+                    {
+                        <p>
+                            <a href="@Url.Action("Edit", "Post", new { id = post.Id })" class="btn btn-warning">Editar</a> |
+
+                            @* Botão de Excluir com confirmação *@
+                            <a href="javascript:void(0);"
+                               class="btn btn-danger"
+                               onclick="confirmDelete(@post.Id)">Excluir</a>
+                        </p>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+    <script>
+        // Função de confirmação antes de excluir
+        function confirmDelete(postId) {
+            if (confirm('Tem certeza que deseja excluir esta postagem?')) {
+                window.location.href = '@Url.Action("Delete", "Post", new { id = "__id__" })'.replace('__id__', postId);
+            }
+        }
+    </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/signalr/5.0.9/signalr.min.js"></script>
+
+    <script type="text/javascript">
+        const connection = new signalR.HubConnectionBuilder()
+            .withUrl("/postHub")
+            .build();
+
+        // Método chamado quando o SignalR envia uma mensagem
+        connection.on("ReceiveMessage", function (message) {
+            alert("Nova postagem: " + message);
+        });
+
+        // Inicia a conexão
+        connection.start().catch(function (err) {
+            return console.error(err.toString());
+        });
+    </script>
+</div>
